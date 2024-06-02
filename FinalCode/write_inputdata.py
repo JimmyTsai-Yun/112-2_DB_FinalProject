@@ -16,7 +16,7 @@ conn_params = {
 connection_pool = pool.SimpleConnectionPool(1, 20, **conn_params)
 
 # Directory containing the .csv files
-input_dir = "./processed_Input_data/" 
+input_dir = "./processed_gold_update/" 
 
 csv_files = glob.glob(os.path.join(input_dir, "*.csv"))
 
@@ -24,7 +24,7 @@ csv_files = glob.glob(os.path.join(input_dir, "*.csv"))
 def import_csv_to_db(csv_file, conn):
     with conn.cursor() as cur:
         with open(csv_file, 'r') as f:
-            cur.copy_expert(f"COPY target_company_stock_prices(company, timestamp, price) FROM stdin WITH CSV HEADER", f)
+            cur.copy_expert(f"COPY target_company_stock_prices(timestamp, company, price) FROM stdin WITH CSV HEADER", f)
         conn.commit()
         print(f"Imported {csv_file} into the database")
 

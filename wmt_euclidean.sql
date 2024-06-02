@@ -10,7 +10,7 @@ CREATE TABLE wmt_euclidean_results (
 
 DO $$
 DECLARE
-    companies TEXT[] := ARRAY['ABT', 'ACN', 'ADBE', 'AMD', 'AMGN', 'AMZN', 'APPL', 'AVGO', 'BAC', 'BRK', 'CAT', 'CORN', 'COST', 'CRM', 'CSCO', 'cvx', 'DIS', 'FED RATE', 'GDP', 'GE', 'GOOGL', 'HD', 'INTU', 'IOEU4', 'JNJ', 'jpm us equity', 'KO', 'LLY', 'LMAHD', 'LMCAD', 'MA', 'MCD', 'MSFT', 'NFLX', 'NVDA', 'ORCL', 'PEP', 'PG', 'PFE', 'QCOM', 'TSLA', 'UNH', 'US PPI', 'V', 'VZ', 'WGC', 'WMT', 'WTI', 'XOM'];
+    companies TEXT[] := ARRAY['WGC', 'QCOM', 'ABT', 'AVGO', 'LMAHD', 'AMGN', 'IOEU4', 'BRK', 'GE', 'DIS', 'jpm us equity', 'CORN', 'WMT', 'NFLX', 'JNJ', 'MA', 'CRM', 'V', 'PFE', 'VZ', 'UNH', 'cvx', 'TSLA', 'PEP', 'LLY', 'WTI', 'INTU', 'ORCL', 'GOOGL', 'AMZN', 'NVDA', 'MSFT', 'BAC', 'LMCAD', 'AMD', 'HD', 'ACN', 'USDCNY', 'XOM', 'CSCO', 'DOLLAR', 'MCD', 'CAT', 'APPL', 'KO', 'PG', 'ADBE', 'GOLD', 'COST', 'TXN'];
     -- companies TEXT[] := ARRAY['ABT', 'ACN'];
     companyname TEXT;
     long_array DOUBLE PRECISION[];
