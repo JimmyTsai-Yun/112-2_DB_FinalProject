@@ -16,8 +16,7 @@ conn_params = {
 connection_pool = pool.SimpleConnectionPool(1, 20, **conn_params)
 
 # Directory containing the .csv files
-# input_dir = "./processed_datas/" 
-input_dir = "./GOLD_FINAL_DATAS/"
+input_dir = "./processed_datas/" 
 
 csv_files = glob.glob(os.path.join(input_dir, "*.csv"))
 
