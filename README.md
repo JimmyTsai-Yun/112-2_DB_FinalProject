@@ -9,11 +9,7 @@ postgresql >= 14</code></pre>
 Make sure your postgresql contain timescaledb extenstion.  
 
 ## Datas for demo
-Please download the data from the following links.
-* input data
-* company stock data  
-
-After downloading the datas, please run the following query to create a hybertable to store the data.
+Please run the following query to create a hybertable to store the data.
 <pre><code>DROP TABLE IF EXISTS company_stock_prices;
 
 CREATE TABLE company_stock_prices (
@@ -38,15 +34,32 @@ python write_inputdata.py</code></pre>
 
 ## Create custom function
 Run the following command to create the time-series data similarity search function.
-<pre><code>psql -U <username> -d database_name -a -f createfunction.sql
+<pre><code>psql -U username -d database_name -a -f createfunction.sql
 </code></pre>
 
 ## Example for the custom function
 1. Pure Euclidean
-<pre><code></code></pre>
+<pre><code>psql -U username -d database_name -a -f appl_euclidean.sql  
+psql -U username -d database_name -a -f wmt_euclidean.sql  
+</code></pre>
 2. V-shift Euclidean
-<pre><code></code></pre>
+<pre><code>psql -U username -d database_name -a -f gold_vshift_euclidean.sql  
+psql -U username -d database_name -a -f fromch_vshift_euclidean.sql  </code></pre>
 3. DTW (Dynamic Time Warping)
-<pre><code></code></pre>
+<pre><code>psql -U username -d database_name -a -f gold_war_dtw.sql</code></pre>
 4. Cross correlation
 <pre><code></code></pre>
+The result will be write into the table named  
+| Table Name               | company | min distance | best index | start time | end time |
+|--------------------------|:-----:|:-----:|:-----:|:-----:|:-----:|
+| wmt_euclidean_results    |   ✓   |    ✓  |       |       |       |
+| appl_euclidean_results   |   ✓   |    ✓  |       |       |       |
+| gold_vsift_results       |   ✓   |    ✓  |       |       |       |
+| fromch_vsift_results     |   ✓   |    ✓  |       |       |       |
+| gold_war_dtw_results     |   ✓   |    ✓  |    ✓  |    ✓  |    ✓  |
+<!-- | Row 6                    | Data  | Data  | Data  | Data  | Data  | -->
+
+
+## Output the result to csv
+You can run the following python sql to output the table result to csv format.
+<pre><code>psql -U username -d database_name -a -f output.sql</code></pre>
