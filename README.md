@@ -38,7 +38,7 @@ python write_inputdata.py</code></pre>
 
 ## Create custom function
 Run the following command to create the time-series data similarity search function.
-<pre><code>psql -U username -d database_name -a -f createfunction.sql
+<pre><code>psql -U <username> -d database_name -a -f createfunction.sql
 </code></pre>
 
 ## Example for the custom function

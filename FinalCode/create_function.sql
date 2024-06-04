@@ -249,3 +249,74 @@ BEGIN
     RETURN QUERY SELECT best_index, min_vshift_euclidean;
 END;
 $$ LANGUAGE plpgsql;
+
+--- define cross_correlation function
+CREATE OR REPLACE FUNCTION cross_correlation(ts1 DOUBLE PRECISION[], ts2 DOUBLE PRECISION[])
+RETURNS TABLE (lag INT, correlation DOUBLE PRECISION) AS $$
+DECLARE
+    n INT := array_length(ts1, 1);
+    m INT := array_length(ts2, 1);
+    max_lag INT := LEAST(n, m) - 1;
+    lag INT;
+    corr DOUBLE PRECISION;
+    max_corr DOUBLE PRECISION := -1;
+    best_lag INT := 0;
+    mean_ts1 DOUBLE PRECISION := 0;
+    mean_ts2 DOUBLE PRECISION := 0;
+    std_ts1 DOUBLE PRECISION := 0;
+    std_ts2 DOUBLE PRECISION := 0;
+    cov DOUBLE PRECISION;
+    i INT;
+    j INT;
+BEGIN
+    IF n IS NULL OR m IS NULL THEN
+        RETURN;
+    END IF;
+
+    -- Calculate means
+    FOR i IN 1..n LOOP
+        mean_ts1 := mean_ts1 + ts1[i];
+    END LOOP;
+    mean_ts1 := mean_ts1 / n;
+
+    FOR i IN 1..m LOOP
+        mean_ts2 := mean_ts2 + ts2[i];
+    END LOOP;
+    mean_ts2 := mean_ts2 / m;
+
+    -- Calculate standard deviations
+    FOR i IN 1..n LOOP
+        std_ts1 := std_ts1 + (ts1[i] - mean_ts1) ^ 2;
+    END LOOP;
+    std_ts1 := sqrt(std_ts1 / n);
+
+    FOR i IN 1..m LOOP
+        std_ts2 := std_ts2 + (ts2[i] - mean_ts2) ^ 2;
+    END LOOP;
+    std_ts2 := sqrt(std_ts2 / m);
+
+    -- Calculate cross-correlation for each lag
+    FOR lag IN -max_lag..max_lag LOOP
+        cov := 0;
+
+        IF lag < 0 THEN
+            FOR i IN 1..(n + lag) LOOP
+                cov := cov + (ts1[i] - mean_ts1) * (ts2[i - lag] - mean_ts2);
+            END LOOP;
+        ELSE
+            FOR i IN (lag + 1)..n LOOP
+                cov := cov + (ts1[i] - mean_ts1) * (ts2[i - lag] - mean_ts2);
+            END LOOP;
+        END IF;
+
+        corr := cov / ((n - abs(lag)) * std_ts1 * std_ts2);
+
+        IF corr > max_corr THEN
+            max_corr := corr;
+            best_lag := lag;
+        END IF;
+
+        RETURN QUERY SELECT lag, corr;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;

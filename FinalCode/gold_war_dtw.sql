@@ -11,6 +11,7 @@ CREATE TABLE gold_war_dtw_results (
 DO $$
 DECLARE
     companies TEXT[] := ARRAY['WGC', 'QCOM', 'ABT', 'AVGO', 'LMAHD', 'AMGN', 'IOEU4', 'BRK', 'GE', 'DIS', 'jpm us equity', 'WMT', 'NFLX', 'JNJ', 'MA', 'CRM', 'V', 'PFE', 'VZ', 'UNH', 'cvx', 'TSLA', 'PEP', 'LLY', 'WTI', 'INTU', 'ORCL', 'GOOGL', 'AMZN', 'NVDA', 'MSFT', 'BAC', 'LMCAD', 'AMD', 'HD', 'ACN', 'USDCNY', 'XOM', 'CSCO', 'DOLLAR', 'MCD', 'CAT', 'APPL', 'KO', 'PG', 'ADBE', 'GOLD', 'COST', 'TXN'];
+    -- companies TEXT[] := ARRAY['GOLD'];
     companyname TEXT;
     long_array DOUBLE PRECISION[];
     short_array DOUBLE PRECISION[];
@@ -30,13 +31,13 @@ BEGIN
         -- 使用 ARRAY_AGG 聚合函數暫存查詢結果
         SELECT ARRAY_AGG(price)
         INTO long_array
-        FROM (SELECT price FROM company_stock_prices WHERE company = companyname ORDER BY timestamp ASC) AS subquery;
+        FROM (SELECT time_bucket('6 days', timestamp) as period,  FIRST(price, timestamp) as price FROM company_stock_prices WHERE company = companyname AND timestamp NOT BETWEEN '2022-02-24' AND '2022-04-22'  GROUP BY period ORDER BY period ASC) AS subquery;
 
-        SELECT id
+        SELECT id, time_bucket('6 days', timestamp) as period
         INTO company_start_index
         FROM company_stock_prices
         WHERE company = companyname
-        ORDER BY timestamp ASC 
+        ORDER BY time_bucket('6 days', timestamp), timestamp ASC
         LIMIT 1;
 
         -- 調用 find_min_dtw_subarray 函數並傳入存儲的陣列
@@ -62,6 +63,6 @@ UPDATE gold_war_dtw_results
 SET end_time = cs.timestamp
 FROM company_stock_prices cs
 WHERE gold_war_dtw_results.company = cs.company
-  AND (gold_war_dtw_results.best_index+57) = cs.id;
+  AND (gold_war_dtw_results.best_index+(57*6)) = cs.id;
 
 SELECT * FROM gold_war_dtw_results;
