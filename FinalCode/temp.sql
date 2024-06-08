@@ -17,4 +17,4 @@
 --         ORDER BY time_bucket('6 days', timestamp), timestamp ASC
 --         LIMIT 1;
 
-SELECT * FROM target_company_stock_prices where company = 'IMPORTCN';
+SELECT * FROM company_stock_prices where company = 'ABT';

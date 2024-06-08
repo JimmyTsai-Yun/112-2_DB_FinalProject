@@ -40,7 +40,7 @@
 
 -- SELECT * FROM fromch_vsift_results;
 
-DROP FUNCTION IF EXISTS calculate_vshift_results(TEXT);
+DROP FUNCTION IF EXISTS calculate_vshift_results(TEXT, TEXT[], BOOLEAN);
 
 -- CREATE OR REPLACE FUNCTION calculate_vshift_results(input_company TEXT)
 -- RETURNS TABLE(companyName TEXT, min_dis DOUBLE PRECISION) AS $$
@@ -113,12 +113,17 @@ DROP FUNCTION IF EXISTS calculate_vshift_results(TEXT);
 -- SELECT * FROM calculate_vshift_results('IMPORTCN', TRUE);
 
 CREATE OR REPLACE FUNCTION calculate_vshift_results(input_company TEXT, compare_company_list TEXT[], use_specific_range BOOLEAN)
-RETURNS TABLE(companyName TEXT, min_dis DOUBLE PRECISION) AS $$
+RETURNS TABLE(companyName TEXT, min_dis DOUBLE PRECISION, start_time timestamp, end_time timestamp) AS $$
 DECLARE
     long_array DOUBLE PRECISION[];
     short_array DOUBLE PRECISION[];
     start_date TIMESTAMP;
     end_date TIMESTAMP;
+    min_vshift_euclidean_record DOUBLE PRECISION;
+    companyfirstindex INT;
+    best_index_record INT;
+    start_time TIMESTAMP;
+    end_time TIMESTAMP;
 BEGIN
 
     -- 從input_company抓取short_array的數據
@@ -140,19 +145,26 @@ BEGIN
             SELECT ARRAY_AGG(price) INTO long_array FROM (
             SELECT price FROM company_stock_prices WHERE company = compare_company_list[i] AND timestamp >= start_date AND timestamp <= end_date ORDER BY timestamp ASC
         ) AS subquery;
+            SELECT id INTO companyfirstindex FROM company_stock_prices WHERE company = compare_company_list[i] AND timestamp = start_date;
         ELSE
             SELECT ARRAY_AGG(price) INTO long_array FROM (
             SELECT price FROM company_stock_prices WHERE company = compare_company_list[i] ORDER BY timestamp ASC
         ) AS subquery;
+            SELECT id INTO companyfirstindex FROM company_stock_prices WHERE company = compare_company_list[i] ORDER BY timestamp ASC LIMIT 1;
         END IF;
 
+        SELECT min_vshift_euclidean, best_index INTO min_vshift_euclidean_record, best_index_record FROM find_min_vshift_euclidean_subarray(long_array, short_array);
+        SELECT timestamp INTO start_time FROM company_stock_prices WHERE company = compare_company_list[i] AND id = (best_index_record + companyfirstindex - 1);
+        SELECT timestamp INTO end_time FROM company_stock_prices WHERE company = compare_company_list[i] AND id = (best_index_record + companyfirstindex + array_length(short_array, 1) - 2);
+        -- 返回結果
+
         -- 假設 find_min_vshift_euclidean_subarray 是一個已定義的函數來計算距離
-        RETURN QUERY SELECT compare_company_list[i], min_vshift_euclidean FROM find_min_vshift_euclidean_subarray(long_array, short_array);
+        RETURN QUERY SELECT compare_company_list[i], min_vshift_euclidean_record, start_time, end_time;
     END LOOP;
 END;
 $$ LANGUAGE plpgsql;
 
 
 -- 使用特定時間範圍
-SELECT * FROM calculate_vshift_results('IMPORTCN', ARRAY['ABT'], TRUE);
+SELECT * FROM calculate_vshift_results('IMPORTCN', ARRAY['ABT'], FALSE);
 
