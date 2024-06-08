@@ -342,7 +342,7 @@ $$ LANGUAGE plpgsql;
 
 DROP FUNCTION IF EXISTS calculate_mixed_with_timerange(TEXT, TEXT[], BOOLEAN, INT[], timestamp, timestamp, weight INT[]);
 
-CREATE OR REPLACE FUNCTION calculate_mixed_with_timerange(input_company TEXT, compare_company_list TEXT[], use_specific_range BOOLEAN, weight INT[], start_day timestamp, end_day timestamp, weight INT[])
+CREATE OR REPLACE FUNCTION calculate_mixed_with_timerange(input_company TEXT, compare_company_list TEXT[], use_specific_range BOOLEAN, start_day timestamp, end_day timestamp, weight INT[])
 RETURNS TABLE(companyName TEXT, min_dis DOUBLE PRECISION, start_time timestamp, end_time timestamp) AS $$
 DECLARE
     long_array DOUBLE PRECISION[];

@@ -108,7 +108,7 @@ $$ LANGUAGE plpgsql;
 DROP FUNCTION IF EXISTS find_min_mixed_subarray(long_array DOUBLE PRECISION[], short_array DOUBLE PRECISION[], weight INT[]);
 
 CREATE OR REPLACE FUNCTION find_min_mixed_subarray(long_array DOUBLE PRECISION[], short_array DOUBLE PRECISION[], weight INT[])
-RETURN TABLE (best_index INT, min_mixed DOUBLE PRECISION) AS $$
+RETURNS TABLE (best_index INT, min_mixed DOUBLE PRECISION) AS $$
 DECLARE
     subarray_length INT;
     min_mixed DOUBLE PRECISION := 'infinity';
@@ -136,3 +136,4 @@ BEGIN
     -- 返回具有最小混合距離的子陣列
     RETURN QUERY SELECT best_index, min_mixed;
 END;
+$$ LANGUAGE plpgsql;

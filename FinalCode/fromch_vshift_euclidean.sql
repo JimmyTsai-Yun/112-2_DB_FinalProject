@@ -164,10 +164,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
--- 使用特定時間範圍
--- SELECT * FROM calculate_vshift_results('IMPORTCN', ARRAY['ABT'], FALSE);
-
 DROP FUNCTION IF EXISTS calculate_vshift_with_timerange(TEXT, TEXT[], BOOLEAN, timestamp, timestamp);
 
 CREATE OR REPLACE FUNCTION calculate_vshift_with_timerange(input_company TEXT, compare_company_list TEXT[], use_specific_range BOOLEAN, start_day timestamp, end_day timestamp)

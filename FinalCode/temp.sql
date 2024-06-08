@@ -17,4 +17,4 @@
 --         ORDER BY time_bucket('6 days', timestamp), timestamp ASC
 --         LIMIT 1;
 
-SELECT * FROM company_stock_prices where company = 'ABT';
+SELECT * FROM calculate_vshift_with_timerange('APPL', ARRAY['ABT'], TRUE, '2010-01-01', '2022-01-01');
