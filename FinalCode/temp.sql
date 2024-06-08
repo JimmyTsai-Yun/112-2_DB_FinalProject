@@ -10,9 +10,11 @@
 -- SELECT * FROM company_stock_prices
 -- WHERE company = 'GOLD';
 
-SELECT id, time_bucket('6 days', timestamp) as period
-        INTO company_start_index
-        FROM company_stock_prices
-        WHERE company = 'GOLD'
-        ORDER BY time_bucket('6 days', timestamp), timestamp ASC
-        LIMIT 1;
+-- SELECT id, time_bucket('6 days', timestamp) as period
+--         INTO company_start_index
+--         FROM company_stock_prices
+--         WHERE company = 'GOLD'
+--         ORDER BY time_bucket('6 days', timestamp), timestamp ASC
+--         LIMIT 1;
+
+SELECT * FROM target_company_stock_prices where company = 'IMPORTCN';
