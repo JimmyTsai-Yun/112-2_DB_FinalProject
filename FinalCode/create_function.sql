@@ -320,3 +320,6 @@ BEGIN
     END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+
+
+-- createn function for pure euclidean distance function with 
