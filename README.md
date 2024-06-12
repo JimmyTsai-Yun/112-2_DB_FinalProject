@@ -1,5 +1,5 @@
-# DB_Final
-Establish a custom time series data similarity comparison function based on the timescaledb database system.
+# 112-2 DBMS Final Project
+Establish custom time series data similarity comparison functions based on the timescaledb database system.
 
 ## Prerequisites
 Before you begin, ensure you have met the following requirements:  
@@ -59,6 +59,9 @@ Below are some examples of different kinds of similarity search functions:
 <pre><code>SELECT * FROM calculate_vshift_with_timerange('APPL', ARRAY['AMD', 'NVDA'], FALSE, '2021-01-01', '2022-12-31');</code></pre>
 3. DTW (Dynamic Time Warping)
 <pre><code>SELECT * FROM calculate_dtw_with_timerange('GOLD', ARRAY['APPL', 'ABT', 'BAC'], TRUE, '2001-01-01', '2002-03-10');</code></pre>
+4. Mixed similarity search  
+In this function, you need to add weight(int[]) to specify each similarity method's weight.
+<pre><code>SELECT * FROM calculate_mixed_with_timerange('GOLD', ARRAY['APPL', 'ABT', 'BAC'], TRUE, '2001-01-01', '2002-03-10', [1,2,3]);</code></pre>
 The result will show the minimum distance for each company and the corresponding time interval.
 <!-- | Table Name               | company | min distance | start time | end time |
 |--------------------------|:-----:|:-----:|:-----:|:-----:|
