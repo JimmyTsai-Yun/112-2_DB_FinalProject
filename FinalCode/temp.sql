@@ -17,4 +17,7 @@
 --         ORDER BY time_bucket('6 days', timestamp), timestamp ASC
 --         LIMIT 1;
 
-SELECT * FROM calculate_vshift_with_timerange('APPL', ARRAY['ABT'], TRUE, '2010-01-01', '2022-01-01');
+SELECT * FROM calculate_mixed_with_timerange('NVDA', ARRAY['APPL'], TRUE, '2012-01-01', '2012-01-10', ARRAY[1,2,3]);
+-- SELECT * FROM calculate_pure_euclidean_results('NVDA', ARRAY['NVDA'], TRUE);
+-- SELECT * FROM calculate_vshift_results('NVDA', ARRAY['NVDA'], TRUE);
+-- SELECT count(*) FROM company_stock_prices where company = 'APPL';

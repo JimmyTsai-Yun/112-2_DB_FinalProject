@@ -116,14 +116,17 @@ DECLARE
     best_subarray DOUBLE PRECISION[];
     best_index INT := -1;
     i INT;
+    sum_weight INT := 0;
 
 BEGIN
     subarray_length := array_length(short_array, 1);
 
+    sum_weight := weight[1] + weight[2] + weight[3];
+
     -- 遍歷 long_array 並計算每個子陣列的混合距離
     FOR i IN 1..array_length(long_array, 1) - subarray_length + 1 LOOP
         -- 獲取子陣列
-        current_mixed := weight[1] * euclidean_distance(long_array[i:i + subarray_length - 1], short_array) + weight[2] * vshift_euclidean_distance(long_array[i:i + subarray_length - 1], short_array) + weight[3] * dtw_distance(long_array[i:i + subarray_length - 1], short_array);
+        current_mixed := (weight[1] * euclidean_distance(long_array[i:i + subarray_length - 1], short_array) + weight[2] * vshift_euclidean_distance(long_array[i:i + subarray_length - 1], short_array) + weight[3] * dtw_distance(long_array[i:i + subarray_length - 1], short_array))/sum_weight;
 
         -- 檢查是否找到更小的混合距離
         IF current_mixed < min_mixed THEN

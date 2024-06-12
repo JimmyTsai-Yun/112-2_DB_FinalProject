@@ -17,11 +17,11 @@ BEGIN
 
     -- 從input_company抓取short_array的數據
     SELECT ARRAY_AGG(price) INTO short_array FROM (
-        SELECT price FROM target_company_stock_prices WHERE company = input_company ORDER BY timestamp ASC
+        SELECT price FROM company_stock_prices WHERE company = input_company ORDER BY timestamp ASC
     ) AS subquery;
 
     IF use_specific_range THEN
-        SELECT MIN(timestamp), MAX(timestamp) INTO start_date, end_date FROM target_company_stock_prices WHERE company = input_company;
+        SELECT MIN(timestamp), MAX(timestamp) INTO start_date, end_date FROM company_stock_prices WHERE company = input_company;
     END IF;
 
     -- 對每一間公司進行處理
@@ -65,7 +65,7 @@ BEGIN
 
     -- 從input_company抓取short_array的數據
     SELECT ARRAY_AGG(price) INTO short_array FROM (
-        SELECT price FROM target_company_stock_prices WHERE company = input_company AND timestamp >= start_day AND timestamp <= end_day ORDER BY timestamp ASC
+        SELECT price FROM company_stock_prices WHERE company = input_company AND timestamp >= start_day AND timestamp <= end_day ORDER BY timestamp ASC
     ) AS subquery;
 
     -- 對每一間公司進行處理
@@ -113,11 +113,11 @@ BEGIN
 
     -- 從input_company抓取short_array的數據
     SELECT ARRAY_AGG(price) INTO short_array FROM (
-        SELECT price FROM target_company_stock_prices WHERE company = input_company ORDER BY timestamp ASC
+        SELECT price FROM company_stock_prices WHERE company = input_company ORDER BY timestamp ASC
     ) AS subquery;
 
     IF use_specific_range THEN
-        SELECT MIN(timestamp), MAX(timestamp) INTO start_date, end_date FROM target_company_stock_prices WHERE company = input_company;
+        SELECT MIN(timestamp), MAX(timestamp) INTO start_date, end_date FROM company_stock_prices WHERE company = input_company;
     END IF;
 
     -- 對每一間公司進行處理
@@ -162,7 +162,7 @@ BEGIN
 
     -- 從input_company抓取short_array的數據
     SELECT ARRAY_AGG(price) INTO short_array FROM (
-        SELECT price FROM target_company_stock_prices WHERE company = input_company AND timestamp >= start_day AND timestamp <= end_day ORDER BY timestamp ASC
+        SELECT price FROM company_stock_prices WHERE company = input_company AND timestamp >= start_day AND timestamp <= end_day ORDER BY timestamp ASC
     ) AS subquery;
 
     -- 對每一間公司進行處理
@@ -210,11 +210,11 @@ BEGIN
 
     -- 從input_company抓取short_array的數據
     SELECT ARRAY_AGG(price) INTO short_array FROM (
-        SELECT price FROM target_company_stock_prices WHERE company = input_company ORDER BY timestamp ASC
+        SELECT price FROM company_stock_prices WHERE company = input_company ORDER BY timestamp ASC
     ) AS subquery;
 
     IF use_specific_range THEN
-        SELECT MIN(timestamp), MAX(timestamp) INTO start_date, end_date FROM target_company_stock_prices WHERE company = input_company;
+        SELECT MIN(timestamp), MAX(timestamp) INTO start_date, end_date FROM company_stock_prices WHERE company = input_company;
     END IF;
 
     -- 對每一間公司進行處理
@@ -261,7 +261,7 @@ BEGIN
 
     -- 從input_company抓取short_array的數據
     SELECT ARRAY_AGG(price) INTO short_array FROM (
-        SELECT price FROM target_company_stock_prices WHERE company = input_company AND timestamp >= start_day AND timestamp <= end_day ORDER BY timestamp ASC
+        SELECT price FROM company_stock_prices WHERE company = input_company AND timestamp >= start_day AND timestamp <= end_day ORDER BY timestamp ASC
     ) AS subquery;
 
     -- 對每一間公司進行處理
@@ -307,11 +307,11 @@ DECLARE
 BEGIN
         -- 從input_company抓取short_array的數據
         SELECT ARRAY_AGG(price) INTO short_array FROM (
-            SELECT price FROM target_company_stock_prices WHERE company = input_company ORDER BY timestamp ASC
+            SELECT price FROM company_stock_prices WHERE company = input_company ORDER BY timestamp ASC
         ) AS subquery;
     
         IF use_specific_range THEN
-            SELECT MIN(timestamp), MAX(timestamp) INTO start_date, end_date FROM target_company_stock_prices WHERE company = input_company;
+            SELECT MIN(timestamp), MAX(timestamp) INTO start_date, end_date FROM company_stock_prices WHERE company = input_company;
         END IF;
     
         -- 對每一間公司進行處理
@@ -355,7 +355,7 @@ DECLARE
 BEGIN   
         -- 從input_company抓取short_array的數據
         SELECT ARRAY_AGG(price) INTO short_array FROM (
-            SELECT price FROM target_company_stock_prices WHERE company = input_company AND timestamp >= start_day AND timestamp <= end_day ORDER BY timestamp ASC
+            SELECT price FROM company_stock_prices WHERE company = input_company AND timestamp >= start_day AND timestamp <= end_day ORDER BY timestamp ASC
         ) AS subquery;
     
         -- 對每一間公司進行處理
